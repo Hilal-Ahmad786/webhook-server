@@ -6,7 +6,14 @@ app.use(bodyParser.json());
 
 app.post('/webhook', (req, res) => {
     try {
-        const intent = req.body.queryResult.intent.displayName;
+        console.log('Received request:', req.body);
+
+        const queryResult = req.body.queryResult;
+        if (!queryResult || !queryResult.intent) {
+            throw new Error('Invalid request structure');
+        }
+
+        const intent = queryResult.intent.displayName;
         let response;
 
         if (intent === 'WeatherExpert') {
